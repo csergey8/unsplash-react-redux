@@ -25,7 +25,8 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.payload,
-                isAuth: true
+                isAuth: true,
+                authProccess: false
             }
         case types.AUTH_START:
             return {
@@ -70,6 +71,7 @@ export const getToken = (code) => async (dispatch) => {
         dispatch(setAuthError('Auth Error'))
     } else {
         const { access_token } = await response.json();
+        console.log(access_token)
         dispatch(setToken(access_token))
     }
     

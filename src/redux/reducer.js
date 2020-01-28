@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { templateReducer } from './templateReducer';
 import { authReducer } from './auth';
+import { photosReducer } from './photos';
 
 const rootReducer =  combineReducers({
-    templateReducer,
-    authReducer
+    authReducer,
+    photosReducer
 })
 
 export { rootReducer }
