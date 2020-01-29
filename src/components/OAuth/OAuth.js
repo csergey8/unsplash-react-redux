@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { getToken, authStart } from "../../redux/auth";
 
 const OAuth = props => {
-  const arr = []
   useEffect(() => {
     props.authStart();
     const code = props.history.location.search.split("=")[1];

@@ -14,7 +14,7 @@ const Header = (props) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if(searchValue){
-      props.history.push(`/photos/${searchValue}`)
+      props.history.push(`/s/photos/${searchValue}`)
     }
   }
   return (

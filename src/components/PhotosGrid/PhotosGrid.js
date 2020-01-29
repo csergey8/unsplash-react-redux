@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import { PhotoTab } from '../PhotoTab';
+import styles from './PhotosGrid.module.scss';
 
-const PhotosGrid = () => {
+const PhotosGrid = ({ photos }) => {
     return (
-        <div>
-            photos grid
+        <div className={styles.photosGridContainer}>
+            {photos.map(photo => <PhotoTab photo={photo} />)}
         </div>
     )
 }

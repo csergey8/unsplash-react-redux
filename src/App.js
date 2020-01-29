@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/about" exact>
             <About />
           </Route>
-          <Route path="/photos/:text" exact component={Photos} />
+          <Route path="/s/photos/:text" exact component={Photos} />
           <Route path="/oauth" component={OAuth} exact />
           <Route component={NotFound} path={"*"} exact />
         </Switch>

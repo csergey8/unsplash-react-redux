@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import styles from './Photos.module.scss';
+import { PhotosGrid } from '../PhotosGrid';
 import { searchPhotos } from '../../redux/photos';
 
 const Photos = (props) => {
@@ -11,7 +12,10 @@ const Photos = (props) => {
     return (
         <div className={styles.photosContainer}>
             <h1>{title}</h1>   
-            { props.photos ? props.photos.map(photo => <img src={photo.urls.small} />) : null}   
+            {
+                props.photos ? <PhotosGrid photos={props.photos} /> : "Loading"
+            }
+            
         </div>
     )
 }
