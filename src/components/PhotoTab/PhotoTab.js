@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, withRouter } from 'react-router-dom';
 import { Modal } from '../Modal';
 import styles from './PhotoTab.module.scss';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -9,8 +9,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 const PhotoTab = ({ photo, match }) => {
     return (
         <div>
-        <Route path={`/photos/id`} render={() => <Modal>hi</Modal>} />
-        <Link to={`/photos/id`}>
+        <Link to={`${match.url}/id`}>
         <div className={styles.photoTabContainer}>
             <img src={photo.urls.small} />
             <div className={styles.favoriteAction}>
@@ -32,4 +31,6 @@ const PhotoTab = ({ photo, match }) => {
     )
 }
 
-export { PhotoTab }
+const PhotoTabWithRouter = withRouter(PhotoTab)
+
+export { PhotoTabWithRouter as PhotoTab }

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import styles from './Photos.module.scss';
 import { PhotosGrid } from '../PhotosGrid';
 import { searchPhotos } from '../../redux/photos';
+import { Modal } from '../Modal';
+import { Route } from 'react-router-dom';
 
 const Photos = (props) => {
     useEffect(() => {
@@ -15,7 +17,7 @@ const Photos = (props) => {
             {
                 props.photos ? <PhotosGrid photos={props.photos} /> : "Loading"
             }
-            
+            <Route path={`${props.match.url}/:id`} render={() => <Modal>Hi</Modal>} />
         </div>
     )
 }
