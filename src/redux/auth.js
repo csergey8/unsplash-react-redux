@@ -60,19 +60,23 @@ export const authEnd = () => ({
 
 export const setAuthError = (error) => ({
     type: types.SET_AUTH_ERROR,
-
 })
 
 export const getToken = (code) => async (dispatch) => {
     const response = await fetch(GET_TOKEN_URL + code, { method: 'POST' });
-    
     if(!response.ok){
         dispatch(authEnd())
         dispatch(setAuthError('Auth Error'))
     } else {
         const { access_token } = await response.json();
-        console.log(access_token)
+        localStorage.setItem('REACT_APP_UNSPLASH', access_token)
         dispatch(setToken(access_token))
-    }
-    
+    }  
 } 
+
+export const initToken = () => async (dispatch) => {
+    const token = localStorage.getItem('REACT_APP_UNSPLASH');
+    if(token){
+        dispatch(setToken(token))
+    }
+}

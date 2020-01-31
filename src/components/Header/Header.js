@@ -5,7 +5,7 @@ import logo from "./logo.png";
 
 const Header = (props) => {
   const { REACT_APP_UNSPLASH_ACCESS_KEY, REACT_APP_REDIRECT_URI } = process.env;
-  const requestURL = `https://unsplash.com/oauth/authorize?client_id=${REACT_APP_UNSPLASH_ACCESS_KEY}&redirect_uri=${REACT_APP_REDIRECT_URI}&response_type=code&scope=public+read_user+write_user`;
+  const requestURL = `https://unsplash.com/oauth/authorize?client_id=${REACT_APP_UNSPLASH_ACCESS_KEY}&redirect_uri=${REACT_APP_REDIRECT_URI}&response_type=code&scope=public+read_user+write_user+write_likes`;
   const [ searchValue, setSearchValue ] = useState('');
   const handleInputChange = ({ target }) => {
     setSearchValue(target.value);
