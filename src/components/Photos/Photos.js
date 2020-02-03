@@ -1,39 +1,46 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import styles from './Photos.module.scss';
-import { PhotosGrid } from '../PhotosGrid';
-import { searchPhotos, clearPhotos } from '../../redux/photos';
-import { Modal } from '../Modal';
-import { Route } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import styles from "./Photos.module.scss";
+import { PhotosGrid } from "../PhotosGrid";
+import { searchPhotos, clearPhotos } from "../../redux/photos";
+import { Photo } from '../Photo';
+import { Route } from "react-router-dom";
 
-const Photos = (props) => {
-    useEffect(() => {
-        props.searchPhotos(props.match.params.text)
-        // return () => {
-        //     props.clearPhotos();
-        // }
-    }, [props.match.params.text])
-    const title = props.match.params.text.charAt(0).toUpperCase() + props.match.params.text.substring(1)
-    return (
-        <div className={styles.photosContainer}>
-            <h1>{title}</h1>   
-            {
-                props.photos ? <PhotosGrid photos={props.photos} /> : "Loading"
-            }
-            <Route path={`${props.match.url}/:id`} render={() => <Modal>Hi</Modal>} />
-        </div>
-    )
-}
+const Photos = props => {
+  useEffect(() => {
+    if (!props.authProccess) {
+      props.searchPhotos(props.match.params.text);
+    }
+    console.log(props.authProccess)
+    console.log(props.match.params.text)
+    return () => props.clearPhotos()
+  }, [props.match.params.text, props.authProccess]);
+  const title =
+    props.match.params.text.charAt(0).toUpperCase() +
+    props.match.params.text.substring(1);
 
-const mapStateToProps = (state) => ({
-    photos: state.photosReducer.photos
-})
+  const modalCloseHandler = () => {
+      props.history.push(props.match.url);
+  }
+  return (
+    <div className={styles.photosContainer}>
+      <h1>{title}</h1>
+      {props.photos ? <PhotosGrid photos={props.photos} /> : "Loading"}
+      <Route path={`${props.match.url}/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
+    </div>
+  );
+};
 
-const mapDispatchToProps = (dispatch) => ({
-    searchPhotos: (text) => dispatch(searchPhotos(text)),
-    clearPhotos: () => dispatch(clearPhotos()) 
-})
+const mapStateToProps = state => ({
+  photos: state.photosReducer.photos,
+  authProccess: state.authReducer.authProccess
+});
 
-const PhotosWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photos)
+const mapDispatchToProps = dispatch => ({
+  searchPhotos: text => dispatch(searchPhotos(text)),
+  clearPhotos: () => dispatch(clearPhotos())
+});
 
-export { PhotosWithRedux as Photos }
+const PhotosWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photos);
+
+export { PhotosWithRedux as Photos };

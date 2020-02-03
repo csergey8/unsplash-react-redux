@@ -1,0 +1,22 @@
+
+.photoModal {
+  background: #fff;
+  position: fixed;
+  top: 7%;
+  bottom: 7%;
+  right: 7%;
+  left: 7%;
+  border-radius: 6px;
+}
+
+.photoImgContainer  {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+}
+
+.photoImg {
+  width: auto;
+  height: 100%;
+}

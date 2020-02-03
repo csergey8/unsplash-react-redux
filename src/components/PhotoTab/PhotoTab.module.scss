@@ -18,6 +18,7 @@
     top: 20px;
     right: 20px;
     display: flex;
+    cursor: pointer;
 }
 
 .favoriteActionLike {
@@ -85,5 +86,56 @@
 }
 
 .favoriteActionLiked {
-    background: red !important;
+    background: #F15151;
+
+
+    &:hover {
+        background: #E04C4B;
+
+        & .favoriteIcon {
+            color: #ffffff;
+        }
+    }
+
+    & .favoriteIcon {
+        color: #ffffff;
+
+    }
+}
+
+.downloadAction {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 32px;
+    background: #e6e6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #767676;
+}
+
+.profileAction {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+   // z-index: 2;
+    cursor: pointer;
+}
+
+.profileImage {
+    border-radius: 50%;
+}
+
+.profileName {
+    font-size: 10px;
+    color: #fff;
+    font-size: 17px;
+    margin-left: 5px;
 }

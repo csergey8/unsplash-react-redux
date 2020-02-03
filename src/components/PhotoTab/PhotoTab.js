@@ -1,22 +1,24 @@
 import React from 'react';
 import { Link, Route, withRouter } from 'react-router-dom';
-import { Modal } from '../Modal';
 import styles from './PhotoTab.module.scss';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { connect } from 'react-redux';
-import { likePhoto } from '../../redux/photos';
+import { likePhoto, unLikePhoto } from '../../redux/photos';
 
-const PhotoTab = ({ photo, match, likePhoto }) => {
+const PhotoTab = ({ photo, match, likePhoto, unLikePhoto }) => {
     const favoriteLikeHandler = (e) => {
         e.preventDefault();
-        likePhoto(photo.id)
+        if(!photo.liked_by_user){
+            likePhoto(photo.id)
+        } else {
+            unLikePhoto(photo.id)
+        }
     }
-    console.log(photo)
     return (
         <div>
-        <Link to={`${match.url}/id`}>
+        <Link to={`${match.url}/${photo.id}`}>
         <div className={styles.photoTabContainer}>
             <img src={photo.urls.small} />
             <div className={styles.favoriteAction}>
@@ -28,12 +30,12 @@ const PhotoTab = ({ photo, match, likePhoto }) => {
                     <div className={styles.collectionText}>Collect</div>
                 </div>
             </div>
-            <div>
+            <div className={styles.downloadAction}>
                 <ArrowDownwardIcon />
             </div>
-            <div>
-                <img src={photo.user.profile_image.small} />
-                {photo.user.name}
+            <div className={styles.profileAction}>
+                <img className={styles.profileImage} src={photo.user.profile_image.small} />
+                <div className={styles.profileName}>{photo.user.name}</div>
             </div>
         </div>
         </Link>
@@ -46,7 +48,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    likePhoto: (id) => dispatch(likePhoto(id))
+    likePhoto: (id) => dispatch(likePhoto(id)),
+    unLikePhoto: (id) => dispatch(unLikePhoto(id))
 })
 
 const PhotoTabWithRedux = connect(mapStateToProps, mapDispatchToProps)(PhotoTab)

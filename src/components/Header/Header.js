@@ -10,7 +10,6 @@ const Header = (props) => {
   const handleInputChange = ({ target }) => {
     setSearchValue(target.value);
   }
-  console.log(props)
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if(searchValue){

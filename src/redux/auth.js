@@ -15,7 +15,7 @@ const GET_TOKEN_URL = `https://unsplash.com/oauth/token?client_id=${REACT_APP_UN
 const initialState = {
     token: null,
     isAuth: false,
-    authProccess: false,
+    authProccess: true,
     authError: null 
 }
 
@@ -33,6 +33,11 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 authError: null,
                 authProccess: true
+            }
+        case types.AUTH_END:
+            return {
+                ...state,
+                authProccess: false
             }
         case types.SET_AUTH_ERROR:
             return {
@@ -75,8 +80,11 @@ export const getToken = (code) => async (dispatch) => {
 } 
 
 export const initToken = () => async (dispatch) => {
+    dispatch(authStart())
     const token = localStorage.getItem('REACT_APP_UNSPLASH');
     if(token){
         dispatch(setToken(token))
+        dispatch(authEnd());
     }
+ dispatch(authEnd())
 }
