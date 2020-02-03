@@ -1,50 +1,33 @@
 import React from 'react';
 import { Link, Route, withRouter } from 'react-router-dom';
 import styles from './PhotoTab.module.scss';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import AddIcon from '@material-ui/icons/Add';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { connect } from 'react-redux';
 import { likePhoto, unLikePhoto } from '../../redux/photos';
+import { ButtonLike, ButtonCollect, ButtonDownload } from '../Buttons';
 
-const PhotoTab = ({ photo, match, likePhoto, unLikePhoto }) => {
-    const favoriteLikeHandler = (e) => {
-        e.preventDefault();
-        if(!photo.liked_by_user){
-            likePhoto(photo.id)
-        } else {
-            unLikePhoto(photo.id)
-        }
-    }
+const PhotoTab = ({ photo, match, likePhoto, unLikePhoto, isAuth }) => {
     return (
-        <div>
         <Link to={`${match.url}/${photo.id}`}>
-        <div className={styles.photoTabContainer}>
-            <img src={photo.urls.small} />
-            <div className={styles.favoriteAction}>
-                <div className={`${styles.favoriteActionLike} ${photo.liked_by_user ? styles.favoriteActionLiked : ""}`} onClick={favoriteLikeHandler}>
-                    <FavoriteIcon className={styles.favoriteIcon} />
+            <div className={styles.photoTabContainer}>
+                <img src={photo.urls.small} />
+                <div className={styles.favoriteAction}>
+                    <ButtonLike likePhoto={likePhoto} unLikePhoto={unLikePhoto} id={photo.id} liked_by_user={photo.liked_by_user} isAuth={isAuth}/>
+                    <ButtonCollect />
                 </div>
-                    <div className={styles.collectAction}>
-                    <AddIcon className={styles.collectionIcon} />
-                    <div className={styles.collectionText}>Collect</div>
+                <div className={styles.downloadButton}>
+                    <ButtonDownload link={photo.links.download} />
+                </div>
+                <div className={styles.profileAction}>
+                    <img className={styles.profileImage} src={photo.user.profile_image.small} />
+                    <div className={styles.profileName}>{photo.user.name}</div>
                 </div>
             </div>
-            <div className={styles.downloadAction}>
-                <ArrowDownwardIcon />
-            </div>
-            <div className={styles.profileAction}>
-                <img className={styles.profileImage} src={photo.user.profile_image.small} />
-                <div className={styles.profileName}>{photo.user.name}</div>
-            </div>
-        </div>
         </Link>
-        </div>
     )
 }
 
 const mapStateToProps = (state) => ({
-
+    isAuth: state.authReducer.isAuth
 })
 
 const mapDispatchToProps = (dispatch) => ({

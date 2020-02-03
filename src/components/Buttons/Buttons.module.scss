@@ -1,0 +1,53 @@
+.button {
+    background: #e6e6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    color: #767676;
+    cursor: pointer;
+    border: 1px solid transparent;
+    outline: transparent;
+
+
+    &:hover {
+        & .icon {
+            color: #000000;
+        }
+
+
+        &.liked {
+            background: rgb(221, 59, 59);
+        }
+    }
+
+    & .icon {
+        font-size: 17px !important;
+    }
+
+    &.buttonLike {
+        width: 40px;
+        height: 32px;
+        margin-right: 5px;
+    }
+
+    &.liked {
+        background: #F15151;
+
+        & .icon {
+            color: #ffffff;
+        }
+    }
+
+    &.buttonCollect {
+        width: 90px;
+        height: 32px;
+        font-size: 17px;
+    }
+
+    &.buttonDownload {
+        width: 40px;
+        height: 32px;
+        font-size: 17px;
+    }
+}
