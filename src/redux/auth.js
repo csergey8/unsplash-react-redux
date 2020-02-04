@@ -5,7 +5,8 @@ const types = {
     AUTH_START: 'AUTH_START',
     AUTH_SUCCESS: 'AUTH_SUCCESS',
     SET_AUTH_ERROR: 'SET_AUTH_ERROR',
-    AUTH_END: 'AUTH_END'
+    AUTH_END: 'AUTH_END',
+    LOGOUT: 'LOGOUT'
 }
 
 const { REACT_APP_UNSPLASH_ACCESS_KEY, REACT_APP_REDIRECT_URI, REACT_APP_UNSPLASH_SECRET_KEY } = process.env;
@@ -45,6 +46,13 @@ export const authReducer = (state = initialState, action) => {
                 authError: action.payload,
                 authProccess: false
             }
+        case types.LOGOUT:
+            return {
+                ...state,
+                authProccess: false,
+                token: null,
+                isAuth: false
+            }
         default:
             return state
     }
@@ -65,6 +73,10 @@ export const authEnd = () => ({
 
 export const setAuthError = (error) => ({
     type: types.SET_AUTH_ERROR,
+})
+
+export const logOut = () => ({
+    type: types.LOGOUT
 })
 
 export const getToken = (code) => async (dispatch) => {

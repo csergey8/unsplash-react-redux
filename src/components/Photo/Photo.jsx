@@ -10,16 +10,9 @@ import {
   unLikePhoto
 } from "../../redux/photos";
 import { ButtonLike, ButtonCollect, ButtonDownload } from "../Buttons";
-const modalStyle = {
-  position: "fixed",
-  left: 0,
-  top: 0,
-  bottom: 0,
-  right: 0,
-  backgroundColor: "rgba(0,0,0,.2)",
-  color: "##FFF",
-  fontSize: "40px"
-};
+import { Loader } from '../Loader';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+
 
 const Photo = props => {
   useEffect(() => {
@@ -33,7 +26,7 @@ const Photo = props => {
   }
 
   return createPortal(
-    <div style={modalStyle} onClick={props.onClose}>
+    <div className={styles.modal} onClick={props.onClose}>
       <div className={styles.photoModal} onClick={modalHandler}>
         {props.photo ? (
           <React.Fragment>
@@ -57,15 +50,21 @@ const Photo = props => {
                 likedByUser={props.photo.liked_by_user}
               />
               <ButtonCollect className={styles.photoModalButtonCollect}/>
-              <ButtonDownload />
+              <ButtonDownload link={props.photo.links.download} />
             </div>
             </div>
             <div className={styles.photoImgContainer}>
               <img className={styles.photoImg} src={props.photo.urls.regular} />
             </div>
+            <div className={styles.locationContainer}>
+              <LocationOnIcon />
+              <div>{props.photo.location.title}</div>
+            </div>
           </React.Fragment>
         ) : (
-          "Loading"
+          <div className={styles.loaderContainer}>
+            <Loader />
+          </div>
         )}
       </div>
     </div>,

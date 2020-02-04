@@ -7,7 +7,7 @@ import { ButtonLike, ButtonCollect, ButtonDownload } from '../Buttons';
 
 const PhotoTab = ({ photo, match, likePhoto, unLikePhoto, isAuth }) => {
     return (
-        // <Link to={`${match.url}/${photo.id}`}>
+        <Link to={`${match.url}/${photo.id}`}>
             <div className={styles.photoTabContainer}>
                 <img src={photo.urls.small} />
                 <div className={styles.favoriteAction}>
@@ -22,7 +22,7 @@ const PhotoTab = ({ photo, match, likePhoto, unLikePhoto, isAuth }) => {
                     <div className={styles.profileName}>{photo.user.name}</div>
                 </div>
             </div>
-        // </Link>
+        </Link>
     )
 }
 

@@ -90,7 +90,7 @@ export const searchPhotos = (text) => async (dispatch, getState) => {
 
 export const likePhoto = (id) => async (dispatch, getState) => {
     const { authReducer: { token } } = getState();
-    const { photosReducer: { photos } } = getState();
+    const { photosReducer: { photos, photo } } = getState();
     const optionsWithToken = {
         headers: {
             ...options.headers,
@@ -100,8 +100,13 @@ export const likePhoto = (id) => async (dispatch, getState) => {
     }
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
     const data = await fetch(likePhotoUri, optionsWithToken);
-    const photo = await data.json();
-    const newPhotos = photos.map(photoItem => photoItem.id === photo.photo.id ? {...photoItem, ...photo.photo} : photoItem)
+    const photoData = await data.json();
+    if(photo){
+        if(photo.id == photoData.photo.id){
+            dispatch(setPhoto({...photo, ...photoData.photo}))
+        }
+    }
+    const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem)
     dispatch(setPhotos(newPhotos))
 }
 
@@ -118,10 +123,13 @@ export const unLikePhoto = (id) => async (dispatch, getState) => {
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
     const data = await fetch(likePhotoUri, optionsWithToken);
     const photoData = await data.json();
-    const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem)
-    if(photo.id == photoData.photo.id){
-        dispatch(setPhoto(...photo, ...photoData.photo))
+    const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem);
+    if(photo){
+        if(photo.id == photoData.photo.id){
+            dispatch(setPhoto({...photo, ...photoData.photo}))
+        }
     }
+    
     dispatch(setPhotos(newPhotos))
 }
 

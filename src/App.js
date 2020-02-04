@@ -7,7 +7,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Photos } from './components/Photos';
 import { Layout } from "./components/Layout";
 import { OAuth } from './components/OAuth';
-
+import { Profile } from './components/Profile';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const App = (props) => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const App = (props) => {
         <Switch>
           <Route path="/s/photos/:text" component={Photos} />
           <Route path="/oauth" component={OAuth} exact />
+          <ProtectedRoute path="/profile" component={Profile} exact />
           <Route path="/" exact component={Home} />
           <Route component={NotFound} />
         </Switch>

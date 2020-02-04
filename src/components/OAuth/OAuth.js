@@ -11,9 +11,7 @@ const OAuth = props => {
     props.getToken(code);
   }
   }, []);
-  
   if (props.isAuth) {
-    console.log(props);
     return <Redirect to="/" />;
   }
   if (props.authError) {
