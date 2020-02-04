@@ -11,10 +11,9 @@ const Photos = props => {
     if (!props.authProccess) {
       props.searchPhotos(props.match.params.text);
     }
-    console.log(props.authProccess)
-    console.log(props.match.params.text)
     return () => props.clearPhotos()
   }, [props.match.params.text, props.authProccess]);
+  
   const title =
     props.match.params.text.charAt(0).toUpperCase() +
     props.match.params.text.substring(1);

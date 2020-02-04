@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import styles from "./Photo.module.scss";
 import { createPortal } from "react-dom";
 import { withRouter } from "react-router-dom";
-import { getPhoto, clearPhoto } from "../../redux/photos";
+import {
+  getPhoto,
+  clearPhoto,
+  likePhoto,
+  unLikePhoto
+} from "../../redux/photos";
+import { ButtonLike, ButtonCollect, ButtonDownload } from "../Buttons";
 const modalStyle = {
   position: "fixed",
   left: 0,
@@ -20,20 +26,39 @@ const Photo = props => {
     props.getPhoto(props.match.params.id);
     return () => props.clearPhoto();
   }, [props.match.params.id]);
+
+  const modalHandler = (e) => {
+    e.stopPropagation()
+    e.preventDefault();
+  }
+
   return createPortal(
     <div style={modalStyle} onClick={props.onClose}>
-      <div className={styles.photoModal} onClick={(e) => e.preventDefault()}>
+      <div className={styles.photoModal} onClick={modalHandler}>
         {props.photo ? (
           <React.Fragment>
-            <div>
+          <div className={styles.photoModalHeader}>
+            <div className={styles.photoModalProfile}>
               <img
-                className={styles.profileImage}
+                className={styles.photoModalProfileImg}
                 src={props.photo.user.profile_image.small}
               />
-              <div>
-                <div>{props.photo.user.name}</div>
-                <div>@{props.photo.user.username}</div>
+              <div className={styles.photoModalProfileText}>
+                <div className={styles.photoModalProfileName}>{props.photo.user.name}</div>
+                <div className={styles.photoModalProfileUsername}>@{props.photo.user.username}</div>
               </div>
+            </div>
+            <div className={styles.photoModalActionsContainer}>
+              <ButtonLike
+                id={props.photo.id}
+                likePhoto={props.likePhoto}
+                unLikePhoto={props.unLikePhoto}
+                isAuth={props.isAuth}
+                likedByUser={props.photo.liked_by_user}
+              />
+              <ButtonCollect className={styles.photoModalButtonCollect}/>
+              <ButtonDownload />
+            </div>
             </div>
             <div className={styles.photoImgContainer}>
               <img className={styles.photoImg} src={props.photo.urls.regular} />
@@ -49,12 +74,15 @@ const Photo = props => {
 };
 
 const mapStateToProps = state => ({
-  photo: state.photosReducer.photo
+  photo: state.photosReducer.photo,
+  isAuth: state.authReducer.isAuth
 });
 
 const mapDispatchToProps = dispatch => ({
   getPhoto: id => dispatch(getPhoto(id)),
-  clearPhoto: () => dispatch(clearPhoto())
+  clearPhoto: () => dispatch(clearPhoto()),
+  likePhoto: id => dispatch(likePhoto(id)),
+  unLikePhoto: id => dispatch(unLikePhoto(id))
 });
 
 const PhotoWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photo);

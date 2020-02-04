@@ -10,9 +10,9 @@ const ButtonDownload = ({ link, history }) => {
         //window.location.assign(link)
     }
     return (
-        <Link to={link} download target="_self" className={`${styles.button} ${styles.buttonDownload}`}>
+        <a href={link} download target="_blank" className={`${styles.button} ${styles.buttonDownload}`}>
             <ArrowDownwardIcon className={styles.icon} />
-        </Link>
+        </a>
     )
 }
 

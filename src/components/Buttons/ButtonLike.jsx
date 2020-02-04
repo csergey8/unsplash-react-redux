@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./Buttons.module.scss";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-const ButtonLike = ({ likePhoto, unLikePhoto, id, liked_by_user }) => {
+const ButtonLike = ({ likePhoto, unLikePhoto, id, likedByUser, isAuth }) => {
     const favoriteLikeHandler = (e) => {
         e.preventDefault();
-        if(!liked_by_user){
+        if(!likedByUser){
             likePhoto(id)
         } else {
             unLikePhoto(id)
@@ -14,7 +14,7 @@ const ButtonLike = ({ likePhoto, unLikePhoto, id, liked_by_user }) => {
   return (
     <button
       className={`${styles.button} ${
-        liked_by_user ? styles.liked : ""
+        likedByUser ? styles.liked : ""
       } ${styles.buttonLike}`}
       onClick={favoriteLikeHandler}
     >
