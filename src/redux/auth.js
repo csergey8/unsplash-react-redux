@@ -6,7 +6,8 @@ const types = {
     AUTH_SUCCESS: 'AUTH_SUCCESS',
     SET_AUTH_ERROR: 'SET_AUTH_ERROR',
     AUTH_END: 'AUTH_END',
-    LOGOUT: 'LOGOUT'
+    LOGOUT: 'LOGOUT',
+    SET_REDIRECT_URL: 'SET_REDIRECT_URL'
 }
 
 const { REACT_APP_UNSPLASH_ACCESS_KEY, REACT_APP_REDIRECT_URI, REACT_APP_UNSPLASH_SECRET_KEY } = process.env;
@@ -17,7 +18,8 @@ const initialState = {
     token: null,
     isAuth: false,
     authProccess: true,
-    authError: null 
+    authError: null,
+    redirectUrl: null 
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -53,6 +55,12 @@ export const authReducer = (state = initialState, action) => {
                 token: null,
                 isAuth: false
             }
+        case types.SET_REDIRECT_URL:
+            console.log(action.payload)
+            return {
+                ...state,
+                redirectUrl: action.payload
+            }
         default:
             return state
     }
@@ -79,6 +87,14 @@ export const logOut = () => {
     localStorage.removeItem('REACT_APP_UNSPLASH');
     return {
         type: types.LOGOUT
+    }
+}
+
+export const setRedirectUrl = (url) => {
+    localStorage.setItem('REACT_APP_UNSPLASH_REDIRECT_URL', url)
+    return {
+        type: types.SET_REDIRECT_URL,
+        payload: url
     }
 }
     

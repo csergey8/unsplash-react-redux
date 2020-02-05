@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from 'react-redux';
 import { initToken } from './redux/auth';
-import { Home } from "./components/Home";
+import { Home } from "./components/Home/";
 import { NotFound } from "./components/404";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Photos } from './components/Photos';

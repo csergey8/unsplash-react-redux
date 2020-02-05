@@ -11,6 +11,7 @@ import {
 } from "../../redux/photos";
 import { ButtonLike, ButtonCollect, ButtonDownload } from "../Buttons";
 import { Loader } from '../Loader';
+import { setRedirectUrl } from '../../redux/auth';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 
@@ -45,6 +46,7 @@ const Photo = props => {
                 unLikePhoto={props.unLikePhoto}
                 isAuth={props.isAuth}
                 likedByUser={props.photo.liked_by_user}
+                setRedirectUrl={props.setRedirectUrl}
               />
               <ButtonCollect className={styles.photoModalButtonCollect}/>
               <ButtonDownload link={props.photo.links.download} />
@@ -78,7 +80,8 @@ const mapDispatchToProps = dispatch => ({
   getPhoto: id => dispatch(getPhoto(id)),
   clearPhoto: () => dispatch(clearPhoto()),
   likePhoto: id => dispatch(likePhoto(id)),
-  unLikePhoto: id => dispatch(unLikePhoto(id))
+  unLikePhoto: id => dispatch(unLikePhoto(id)),
+  setRedirectUrl: (url) => dispatch(setRedirectUrl(url))
 });
 
 const PhotoWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photo);

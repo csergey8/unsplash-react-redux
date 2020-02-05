@@ -1,5 +1,6 @@
 .photoTabContainer {
     position: relative;
+    max-width: 420px;
     // background: #000;
     // & img {
     //     &:hover {
@@ -10,6 +11,10 @@
     &:hover {
         cursor: zoom-in;
     }
+}
+
+.photoTabLink {
+    cursor: zoom-in;
 }
 
 .favoriteAction {

@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { getToken, authStart } from "../../redux/auth";
+import { Loader } from '../Loader';
+import styles from '../Photo/Photo.module.scss';
 
 const OAuth = props => {
   useEffect(() => {
@@ -11,20 +13,23 @@ const OAuth = props => {
     props.getToken(code);
   }
   }, []);
+  const url = localStorage.getItem('REACT_APP_UNSPLASH_REDIRECT_URL')
   if (props.isAuth) {
-    return <Redirect to="/" />;
+    return <Redirect to={`${url ? url : "/"}`} />;
   }
   if (props.authError) {
     return <Redirect to="/" />;
   }
+  
 
-  return <div>{props.authProccess ? "Please wait..." : null}</div>;
+  return <div className={styles.loaderContainer}>{props.authProccess ? <Loader /> : <Loader /> }</div>;
 };
 
 const mapStateToProps = state => ({
   authProccess: state.authReducer.authProccess,
   authError: state.authReducer.authError,
-  isAuth: state.authReducer.isAuth
+  isAuth: state.authReducer.isAuth,
+  redirectUrl: state.authReducer.redirectUrl
 });
 
 const mapDispatchToProps = dispatch => ({

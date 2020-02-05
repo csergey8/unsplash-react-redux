@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import logo from "./logo.png";
 import { connect } from 'react-redux';
+import { setRedirectUrl } from "../../redux/auth";
 
 
 const { REACT_APP_UNSPLASH_ACCESS_KEY, REACT_APP_REDIRECT_URI } = process.env;
@@ -23,7 +24,7 @@ const Header = (props) => {
   }
 
   const onClickHandler = () => {
-
+    props.setRedirectUrl(props.location.pathname)
   }
   return (
     <div className={styles.header}>
@@ -52,7 +53,11 @@ const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth
 })
 
-const HeaderWithRedux = connect(mapStateToProps)(Header)
+const mapDispatchToProps = dispatch => ({
+  setRedirectUrl: (url) => dispatch(setRedirectUrl(url))
+})
+
+const HeaderWithRedux = connect(mapStateToProps, mapDispatchToProps)(Header)
 
 const HeaderWithRouter = withRouter(HeaderWithRedux)
 export { HeaderWithRouter as Header, requestURL };

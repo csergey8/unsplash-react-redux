@@ -3,10 +3,12 @@ const types = {
     CLEAR_PHOTOS: 'CLEAR_PHOTOS',
     SET_PHOTO: 'SET_PHOTO',
     CLEAR_PHOTO: 'CLEAR_PHOTO',
-    LIKE_PHOTO: 'LIKE_PHOTO'
+    LIKE_PHOTO: 'LIKE_PHOTO',
+    SET_RANDOM_PHOTO: 'SET_RANDOM_PHOTO'
 }
 
 const searchPhotosUri = `https://api.unsplash.com/search/photos?page=1&query=`;
+const searchRandomPhotoUri = `https://api.unsplash.com/photos/random?count=20`;
 
 let options = {
     headers: {
@@ -16,7 +18,8 @@ let options = {
 
 const initialState = {
     photos: null,
-    photo: null
+    photo: null,
+    randomPhoto: null
 }
 
 export const photosReducer = (state = initialState, action) => {
@@ -45,6 +48,11 @@ export const photosReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case types.SET_RANDOM_PHOTO:
+            return {
+                ...state,
+                randomPhoto: action.payload
+            }
         default:
             return state
     }
@@ -70,6 +78,11 @@ export const clearPhoto = () => ({
 
 export const likePhotoAction = (photo) => ({
     type: types.LIKE_PHOTO,
+    payload: photo
+})
+
+export const setRandomPhoto = (photo) => ({
+    type: types.SET_RANDOM_PHOTO,
     payload: photo
 })
 
@@ -147,4 +160,22 @@ export const getPhoto = (id) => async (dispatch, getState) => {
     const data = await fetch(getPhotoUri, options);
     const photo = await data.json();
     dispatch(setPhoto(photo))
+}
+
+export const getRandomPhotos = () => async (dispatch, getState) => {
+    const { authReducer: { token } } = getState();
+    if(token){
+        options = {
+            headers: {
+                ...options.headers,
+                Authorization: `Bearer ${token}` 
+            }
+        }
+    }
+    const data = await fetch(searchRandomPhotoUri, options);
+    const results  = await data.json();
+    const photo = results.shift();
+    console.log(photo)
+    dispatch(setRandomPhoto(photo))
+    dispatch(setPhotos(results));
 }
