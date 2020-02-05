@@ -5,12 +5,9 @@ import styles from "./Buttons.module.scss";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 const ButtonDownload = ({ link, history }) => {
-  const onClickHandler = e => {
-    e.stopPropagation()
-    //window.location.assign(link)
-  };
+  console.log(link)
   return (
-    <div onClick={onClickHandler}>
+    <div>
       <a
         href={link}
         download

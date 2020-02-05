@@ -75,9 +75,13 @@ export const setAuthError = (error) => ({
     type: types.SET_AUTH_ERROR,
 })
 
-export const logOut = () => ({
-    type: types.LOGOUT
-})
+export const logOut = () => {
+    localStorage.removeItem('REACT_APP_UNSPLASH');
+    return {
+        type: types.LOGOUT
+    }
+}
+    
 
 export const getToken = (code) => async (dispatch) => {
     const response = await fetch(GET_TOKEN_URL + code, { method: 'POST' });

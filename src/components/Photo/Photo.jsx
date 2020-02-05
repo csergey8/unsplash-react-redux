@@ -20,14 +20,11 @@ const Photo = props => {
     return () => props.clearPhoto();
   }, [props.match.params.id]);
 
-  const modalHandler = (e) => {
-    e.stopPropagation()
-    e.preventDefault();
-  }
-
   return createPortal(
+    <React.Fragment>
     <div className={styles.modal} onClick={props.onClose}>
-      <div className={styles.photoModal} onClick={modalHandler}>
+    </div>
+      <div className={styles.photoModal} >
         {props.photo ? (
           <React.Fragment>
           <div className={styles.photoModalHeader}>
@@ -67,7 +64,7 @@ const Photo = props => {
           </div>
         )}
       </div>
-    </div>,
+    </React.Fragment>,
     document.getElementById("modal_root")
   );
 };
