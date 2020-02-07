@@ -23,7 +23,7 @@ const Photo = props => {
 
   return createPortal(
     <React.Fragment>
-    <div className={styles.modal} onClick={props.onClose}>
+    <div className={styles.modal} onClick={props.history.goBack}>
     </div>
       <div className={styles.photoModal} >
         {props.photo ? (
