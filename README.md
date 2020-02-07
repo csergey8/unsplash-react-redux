@@ -1,5 +1,4 @@
-![Image of travis]
-(https://travis-ci.com/csergey8/unsplash-react-redux.svg)
+[![Build Status](https://travis-ci.com/csergey8/unsplash-react-redux.svg?branch=master)](https://travis-ci.com/csergey8/unsplash-react-redux)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
