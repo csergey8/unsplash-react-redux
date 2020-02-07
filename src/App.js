@@ -9,6 +9,7 @@ import { Layout } from "./components/Layout";
 import { OAuth } from './components/OAuth';
 import { Profile } from './components/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Photo } from './components/Photo';
 
 const App = (props) => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const App = (props) => {
           <Route path="/s/photos/:text" component={Photos} />
           <Route path="/oauth" component={OAuth} exact />
           <ProtectedRoute path="/profile" component={Profile} exact />
+          <Route exact path={`/:id`} render={() => <Photo  />} />
           <Route path="/" exact component={Home} />
           <Route component={NotFound} />
         </Switch>

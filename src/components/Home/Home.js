@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
 import { HomeSearch } from './HomeSearch';
 import { connect } from 'react-redux';
-import { getRandomPhotos } from '../../redux/photos';
+import { getRandomPhotos, clearPhotos } from '../../redux/photos';
 import { PhotosGrid } from '../PhotosGrid';
 import { Loader } from '../Loader';
+import { Route, withRouter } from "react-router-dom";
+import { Photo } from '../Photo';
 
 
 
 const Home = (props) => {
     useEffect(() => {
-        props.getRandomPhotos()
+        props.getRandomPhotos();
+        return () => props.clearPhotos()
     }, [null])
+    console.log(props)
+    const modalCloseHandler = () => {
+        props.history.push(props.match.url);
+    }
     return (
         <div>
             {
@@ -23,22 +30,23 @@ const Home = (props) => {
                 ) 
                 : <Loader />
             }
-            Home
-            
+            <Route path={`f/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
         </div>
     )
 }
 
 const mapStateToProps = state => ({
     photos: state.photosReducer.photos,
-    randomPhoto: state.photosReducer.randomPhoto
 })
 
 const mapDispatchToProps = dispatch => ({
-    getRandomPhotos: () => dispatch(getRandomPhotos())
+    getRandomPhotos: () => dispatch(getRandomPhotos()),
+    clearPhotos: () => dispatch(clearPhotos())
 })
 
-const HomeWithRedux = connect(mapStateToProps, mapDispatchToProps)(Home)
+const HomeWithRouter = withRouter(Home)
+
+const HomeWithRedux = connect(mapStateToProps, mapDispatchToProps)(HomeWithRouter)
 
 
 export { HomeWithRedux as Home }
