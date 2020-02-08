@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from 'react-redux';
 import { initToken } from './redux/auth';
-import { Home } from "./components/Home/";
+import { Home } from "./components/Home";
 import { NotFound } from "./components/404";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Photos } from './components/Photos';
 import { Layout } from "./components/Layout";
 import { OAuth } from './components/OAuth';
 import { Profile } from './components/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { Photo } from './components/Photo';
 
 const App = (props) => {
   useEffect(() => {
@@ -17,6 +16,7 @@ const App = (props) => {
       props.initToken()
     }
   })
+  
   return (
     <BrowserRouter>
       <Layout>
@@ -24,8 +24,10 @@ const App = (props) => {
           <Route path="/s/photos/:text" component={Photos} />
           <Route path="/oauth" component={OAuth} exact />
           <ProtectedRoute path="/profile" component={Profile} exact />
-          <Route exact path={`/:id`} render={() => <Photo  />} />
-          <Route path="/" exact component={Home} />
+          <Route path="/p" component={Home} />
+          <Route path="/" exact>
+            <Redirect to="/p"/>
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </Layout>

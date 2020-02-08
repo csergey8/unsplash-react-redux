@@ -17,7 +17,7 @@ let options = {
 }
 
 const initialState = {
-    photos: null,
+    photos: [],
     photo: null,
     randomPhoto: null
 }
@@ -175,7 +175,6 @@ export const getRandomPhotos = () => async (dispatch, getState) => {
     const data = await fetch(searchRandomPhotoUri, options);
     const results  = await data.json();
     const photo = results.shift();
-    console.log(photo)
     dispatch(setRandomPhoto(photo))
     dispatch(setPhotos(results));
 }

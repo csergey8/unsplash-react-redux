@@ -21,9 +21,13 @@ const Photo = props => {
     return () => props.clearPhoto();
   }, [props.match.params.id]);
 
+  const modalCloseHandler = () => {
+    props.history.push("/");
+}
+
   return createPortal(
     <React.Fragment>
-    <div className={styles.modal} onClick={props.history.goBack}>
+    <div className={styles.modal} onClick={props.onClose || modalCloseHandler}>
     </div>
       <div className={styles.photoModal} >
         {props.photo ? (

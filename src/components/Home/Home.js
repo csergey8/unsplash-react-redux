@@ -13,8 +13,7 @@ const Home = (props) => {
     useEffect(() => {
         props.getRandomPhotos();
         return () => props.clearPhotos()
-    }, [null])
-    console.log(props)
+    }, [])
     const modalCloseHandler = () => {
         props.history.push(props.match.url);
     }
@@ -30,13 +29,14 @@ const Home = (props) => {
                 ) 
                 : <Loader />
             }
-            <Route path={`f/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
+        <Route path={`${props.match.url}/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
         </div>
     )
 }
 
 const mapStateToProps = state => ({
     photos: state.photosReducer.photos,
+    randomPhoto: state.photosReducer.randomPhoto
 })
 
 const mapDispatchToProps = dispatch => ({

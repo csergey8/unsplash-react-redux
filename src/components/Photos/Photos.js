@@ -14,7 +14,6 @@ const Photos = props => {
     }
     return () => props.clearPhotos()
   }, [props.match.params.text, props.authProccess]);
-  console.log(props)
   const title =
     props.match.params.text.charAt(0).toUpperCase() +
     props.match.params.text.substring(1);

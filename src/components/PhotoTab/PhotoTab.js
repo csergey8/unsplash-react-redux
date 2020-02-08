@@ -7,10 +7,10 @@ import { setRedirectUrl } from '../../redux/auth';
 import { ButtonLike, ButtonCollect, ButtonDownload } from '../Buttons';
 
 const PhotoTab = ({ photo, match, likePhoto, unLikePhoto, isAuth, setRedirectUrl }) => {
-    console.log(match);
+    const link = match.url === "/" ? `${match.url}${photo.id}` : `${match.url}/${photo.id}`;
     return (
             <div className={styles.photoTabContainer}>
-                <Link to={`${match.url}${photo.id}`} className={styles.photoTabLink}>
+                <Link to={link} className={styles.photoTabLink}>
                     <img src={photo.urls.small} />
                 </Link>
                 <div className={styles.favoriteAction}>

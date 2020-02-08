@@ -5,7 +5,6 @@ import styles from "./Buttons.module.scss";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 const ButtonDownload = ({ link, history }) => {
-  console.log(link)
   return (
     <div>
       <a
