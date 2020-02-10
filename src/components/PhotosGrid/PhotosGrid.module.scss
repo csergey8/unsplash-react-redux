@@ -1,6 +1,10 @@
-.photosGridContainer {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
+.PhotosGrid_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: start;
+    justify-items: center;
+    gap: 25px 25px;
+    max-width: 1320px;
+    margin: 0 auto;
 }

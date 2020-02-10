@@ -1,0 +1,21 @@
+.HomeSearch_container {
+  height: 40vh;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  flex-direction: column;
+  position: relative;
+}
+
+.HomeSearch_usernameText {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.HomeSearch_content {
+  position: relative;
+  bottom: 30px;
+}

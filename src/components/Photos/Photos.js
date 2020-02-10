@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styles from "./Photos.module.scss";
 import { PhotosGrid } from "../PhotosGrid";
-import { searchPhotos, clearPhotos } from "../../redux/photos";
+import { searchPhotos, clearPhotos, loadMoreSearchPhotos } from "../../redux/photos";
 import { Photo } from '../Photo';
 import { Route } from "react-router-dom";
 import { Loader } from "../Loader";
@@ -14,6 +14,7 @@ const Photos = props => {
     }
     return () => props.clearPhotos()
   }, [props.match.params.text, props.authProccess]);
+
   const title =
     props.match.params.text.charAt(0).toUpperCase() +
     props.match.params.text.substring(1);
@@ -22,9 +23,10 @@ const Photos = props => {
       props.history.push(props.match.url);
   }
   return (
-    <div className={styles.photosContainer}>
-      <h1>{title}</h1>
-      {props.photos ? <PhotosGrid photos={props.photos} /> : (<div className={styles.loaderContainer}><Loader /></div>)}
+    <div className={styles.Photos_container}>
+      <h1 className={styles.Photos_title}>{title}</h1>
+        {props.photos ? <PhotosGrid photos={props.photos} /> : (<div className={styles.Loader_container}><Loader /></div>)}
+        <button onClick={() => props.loadMore()}>Load more</button>
       <Route path={`${props.match.url}/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
     </div>
   );
@@ -37,7 +39,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   searchPhotos: text => dispatch(searchPhotos(text)),
-  clearPhotos: () => dispatch(clearPhotos())
+  clearPhotos: () => dispatch(clearPhotos()),
+  loadMore: () => dispatch(loadMoreSearchPhotos())
 });
 
 const PhotosWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photos);

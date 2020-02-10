@@ -4,8 +4,8 @@ import styles from './PhotosGrid.module.scss';
 
 const PhotosGrid = ({ photos }) => {
     return (
-        <div className={styles.photosGridContainer}>
-            {photos.map(photo => <PhotoTab key={photo.id} photo={photo} />)}
+        <div className={styles.PhotosGrid_container}>
+            {photos.map((photo, i) => <PhotoTab key={i} photo={photo} />)}
         </div>
     )
 }

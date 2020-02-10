@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { logOut } from '../../redux/auth';
+import styles from './Profile.module.scss';
+import { Loader } from '../Loader';
+import { getCurrentUser } from '../../redux/user.js'
 import { Redirect } from 'react-router';
 
-const Profile = (props) => {
+const Profile = ({ user, getCurrentUser, logOut }) => {
+    useEffect(() => {
+        getCurrentUser();
+    }, [])
     const logoutHanlder = () => {
-        props.logOut();
+        logOut();
         return <Redirect to="/" />
     }
     return (
-        <div>
+        <div className={styles.Profile_container}>
+            { user ?
+                <div>
+                    {user.name}
+                </div>
+            
+                : <Loader />
+            }
             <button onClick={logoutHanlder}>logout</button>
         </div>
     )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    logOut: () => dispatch(logOut())
+    logOut: () => dispatch(logOut()),
+    getCurrentUser: () => dispatch(getCurrentUser()) 
 })
 
-const ProfileWithRedux = connect(null, mapDispatchToProps)(Profile)
+const mapStateToProps = (state) => ({
+    user: state.userReducer.currentUser
+})
+
+const ProfileWithRedux = connect(mapStateToProps, mapDispatchToProps)(Profile)
 
 export { ProfileWithRedux as Profile }

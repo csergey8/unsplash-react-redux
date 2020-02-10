@@ -1,9 +1,13 @@
-.photosContainer {
-    width: 80%;
-    margin: 0 auto;
+.Photos_container {
 }
 
-.loaderContainer {
+.Photos_title {
+    max-width: 1320px;
+    margin: 1rem auto;
+    font-size: 3rem;
+}
+
+.Loader_container {
     display: flex;
     justify-content: center;
     align-items: center;

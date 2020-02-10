@@ -1,9 +1,19 @@
-import React from 'react'
+import React from 'react';
+import { SearchInput } from '../SearchInput';
+import styles from './HomeSearch.module.scss';
 
-const HomeSearch = () => {
+const HomeSearch = ({ photo }) => {
+    const style = {
+        background: `linear-gradient(rgba(0,0,0,0.3), rgba(0, 0, 0, 0.3)), url("${photo.urls.full}") no-repeat center`,
+        backgroundSize: "cover"
+    }
     return (
-        <div>
-            Home Search
+        <div style={style} className={styles.HomeSearch_container}>
+        <div className={styles.HomeSearch_content}>
+            <h2>Search for photo:</h2>
+            <SearchInput />
+        </div>
+        <div className={styles.HomeSearch_usernameText}>by {photo.user.username}</div>
         </div>
     )
 }

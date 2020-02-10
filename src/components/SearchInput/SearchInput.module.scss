@@ -1,0 +1,19 @@
+.Search_input {
+  width: 555px;
+  padding: 12px 20px;
+  border-radius: 19px;
+  border: 1px solid transparent;
+  background: #eeeeee;
+  font-size: 14px;
+  font-weight: 400;
+
+  &:focus {
+    border: 1px solid rgb(182, 181, 181);
+    background: #ffffff;
+    outline: 0px transparent;
+  }
+
+  &:hover {
+    border: 1px solid rgb(182, 181, 181);
+  }
+}

@@ -56,7 +56,6 @@ export const authReducer = (state = initialState, action) => {
                 isAuth: false
             }
         case types.SET_REDIRECT_URL:
-            console.log(action.payload)
             return {
                 ...state,
                 redirectUrl: action.payload

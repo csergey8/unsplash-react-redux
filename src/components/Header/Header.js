@@ -1,44 +1,27 @@
 import React, { useState } from "react";
 import styles from "./Header.module.scss";
 import { Link, withRouter } from "react-router-dom";
+import { SearchInput } from '../SearchInput'; 
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import logo from "./logo.png";
 import { connect } from 'react-redux';
 import { setRedirectUrl } from "../../redux/auth";
+import MonochromePhotosIcon from '@material-ui/icons/MonochromePhotos';
 
 
 const { REACT_APP_UNSPLASH_ACCESS_KEY, REACT_APP_REDIRECT_URI } = process.env;
 const requestURL = `https://unsplash.com/oauth/authorize?client_id=${REACT_APP_UNSPLASH_ACCESS_KEY}&redirect_uri=${REACT_APP_REDIRECT_URI}&response_type=code&scope=public+read_user+write_user+write_likes`;
 
 const Header = (props) => {
-  const [ searchValue, setSearchValue ] = useState('');
-  const handleInputChange = ({ target }) => {
-    setSearchValue(target.value);
-  }
-
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    if(searchValue){
-      props.history.push(`/s/photos/${searchValue}`)
-    }
-  }
-
+  
   const onClickHandler = () => {
     props.setRedirectUrl(props.location.pathname)
   }
   return (
-    <div className={styles.header}>
+    <div className={styles.Header}>
       <Link to="/">
-        <img src={logo} alt="logo" className={styles.logo} />
+        <MonochromePhotosIcon className={styles.Logo} />
       </Link>
-      <form onSubmit={onSubmitHandler} >
-        <input
-          onChange={handleInputChange}
-          value={searchValue}
-          className={styles.searchInput}
-          placeholder="Search free high-resolution photo"
-        />
-      </form>
+      <SearchInput />
       {
         props.isAuth ? 
         <Link to="/profile"><AccountCircleOutlinedIcon className={styles.profileIcon}/></Link>

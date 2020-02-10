@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { HomeSearch } from './HomeSearch';
 import { connect } from 'react-redux';
-import { getRandomPhotos, clearPhotos } from '../../redux/photos';
+import { getRandomPhotos, clearPhotos, loadMoreRandomPhotos } from '../../redux/photos';
 import { PhotosGrid } from '../PhotosGrid';
 import { Loader } from '../Loader';
 import { Route, withRouter } from "react-router-dom";
@@ -17,6 +17,13 @@ const Home = (props) => {
     const modalCloseHandler = () => {
         props.history.push(props.match.url);
     }
+
+    window.addEventListener('scroll', (e) => {
+        if(window.innerHeight + document.documentElement.scrollTop
+            >= document.documentElement.scrollHeight){
+                props.loadMore();
+            }
+    })
     return (
         <div>
             {
@@ -25,6 +32,7 @@ const Home = (props) => {
                 <React.Fragment>
                 <HomeSearch photo={props.randomPhoto} />
                 <PhotosGrid photos={props.photos} />
+                <button onClick={() => props.loadMore()}>load more</button>
                 </React.Fragment>
                 ) 
                 : <Loader />
@@ -41,7 +49,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     getRandomPhotos: () => dispatch(getRandomPhotos()),
-    clearPhotos: () => dispatch(clearPhotos())
+    clearPhotos: () => dispatch(clearPhotos()),
+    loadMore: () => dispatch(loadMoreRandomPhotos())
 })
 
 const HomeWithRouter = withRouter(Home)

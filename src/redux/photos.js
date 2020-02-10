@@ -4,11 +4,13 @@ const types = {
     SET_PHOTO: 'SET_PHOTO',
     CLEAR_PHOTO: 'CLEAR_PHOTO',
     LIKE_PHOTO: 'LIKE_PHOTO',
-    SET_RANDOM_PHOTO: 'SET_RANDOM_PHOTO'
+    SET_RANDOM_PHOTO: 'SET_RANDOM_PHOTO',
+    LOAD_MORE_PHOTOS: 'LOAD_MORE_PHOTOS',
+    SET_SEARCH_TEXT: 'SET_SEARCH_TEXT'
 }
 
-const searchPhotosUri = `https://api.unsplash.com/search/photos?page=1&query=`;
-const searchRandomPhotoUri = `https://api.unsplash.com/photos/random?count=20`;
+const searchPhotosUri = `https://api.unsplash.com/search/photos`;
+const searchRandomPhotoUri = `https://api.unsplash.com/photos?page=`;
 
 let options = {
     headers: {
@@ -17,9 +19,11 @@ let options = {
 }
 
 const initialState = {
-    photos: [],
+    photos: null,
     photo: null,
-    randomPhoto: null
+    randomPhoto: null,
+    photosPage: 1,
+    searchText: ''
 }
 
 export const photosReducer = (state = initialState, action) => {
@@ -32,7 +36,8 @@ export const photosReducer = (state = initialState, action) => {
         case types.CLEAR_PHOTOS:
             return {
                 ...state,
-                photos: null
+                photos: null,
+                photosPage: 1
             }
         case types.SET_PHOTO:
             return {
@@ -52,6 +57,19 @@ export const photosReducer = (state = initialState, action) => {
             return {
                 ...state,
                 randomPhoto: action.payload
+            }
+        case types.LOAD_MORE_PHOTOS: 
+            return {
+                ...state,
+                photos: [
+                    ...state.photos, ...action.payload
+                ],
+                photosPage: state.photosPage + 1
+            }
+        case types.SET_SEARCH_TEXT:
+            return {
+                ...state,
+                searchText: action.payload
             }
         default:
             return state
@@ -86,8 +104,19 @@ export const setRandomPhoto = (photo) => ({
     payload: photo
 })
 
+export const loadMorePhotos = (photos) => ({
+    type: types.LOAD_MORE_PHOTOS,
+    payload: photos
+})
+
+export const setSearchText = (text) => ({
+    type: types.SET_SEARCH_TEXT,
+    payload: text
+})
+
 export const searchPhotos = (text) => async (dispatch, getState) => {
     const { authReducer: { token } } = getState();
+    const { photosReducer: { photosPage } } = getState();
     if(token){
         options = {
             headers: {
@@ -96,8 +125,9 @@ export const searchPhotos = (text) => async (dispatch, getState) => {
             }
         }
     }
-    const data = await fetch(searchPhotosUri + text, options);
+    const data = await fetch(searchPhotosUri + `?page=1&query=${text}`, options);
     const { results } = await data.json();
+    dispatch(setSearchText(text))
     dispatch(setPhotos(results));
 }
 
@@ -148,6 +178,7 @@ export const unLikePhoto = (id) => async (dispatch, getState) => {
 
 export const getPhoto = (id) => async (dispatch, getState) => {
     const { authReducer: { token } } = getState();
+    
     if(token){
         options = {
             headers: {
@@ -164,6 +195,7 @@ export const getPhoto = (id) => async (dispatch, getState) => {
 
 export const getRandomPhotos = () => async (dispatch, getState) => {
     const { authReducer: { token } } = getState();
+    const { photosReducer: { photosPage } } = getState();
     if(token){
         options = {
             headers: {
@@ -172,9 +204,42 @@ export const getRandomPhotos = () => async (dispatch, getState) => {
             }
         }
     }
-    const data = await fetch(searchRandomPhotoUri, options);
+    const data = await fetch(searchRandomPhotoUri + photosPage, options);
     const results  = await data.json();
     const photo = results.shift();
     dispatch(setRandomPhoto(photo))
     dispatch(setPhotos(results));
+}
+
+export const loadMoreRandomPhotos = () => async (dispatch, getState) => {
+    const { authReducer: { token } } = getState();
+    const { photosReducer: { photosPage } } = getState();
+    if(token){
+        options = {
+            headers: {
+                ...options.headers,
+                Authorization: `Bearer ${token}` 
+            }
+        }
+    }
+    const data = await fetch(searchRandomPhotoUri + photosPage, options);
+    const results  = await data.json();
+    dispatch(loadMorePhotos(results));
+}
+
+export const loadMoreSearchPhotos = () => async (dispatch, getState) => {
+    const { authReducer: { token } } = getState();
+    const { photosReducer: { photosPage, searchText } } = getState();
+    if(token){
+        options = {
+            headers: {
+                ...options.headers,
+                Authorization: `Bearer ${token}` 
+            }
+        }
+    }
+
+    const data = await fetch(searchPhotosUri + `?page=${photosPage}&query=${searchText}`, options);
+    const { results } = await data.json();
+    dispatch(loadMorePhotos(results));
 }
