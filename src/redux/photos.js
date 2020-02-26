@@ -1,3 +1,5 @@
+import { createOptions } from '../utils';
+
 const types = {
     SET_PHOTOS: 'SET_PHOTOS',
     CLEAR_PHOTOS: 'CLEAR_PHOTOS',
@@ -12,11 +14,7 @@ const types = {
 const searchPhotosUri = `https://api.unsplash.com/search/photos`;
 const searchRandomPhotoUri = `https://api.unsplash.com/photos?page=`;
 
-let options = {
-    headers: {
-        Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`
-    }
-}
+
 
 const initialState = {
     photos: null,
@@ -115,16 +113,7 @@ export const setSearchText = (text) => ({
 })
 
 export const searchPhotos = (text) => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
-    const { photosReducer: { photosPage } } = getState();
-    if(token){
-        options = {
-            headers: {
-                ...options.headers,
-                Authorization: `Bearer ${token}` 
-            }
-        }
-    }
+    const options = createOptions(getState);
     const data = await fetch(searchPhotosUri + `?page=1&query=${text}`, options);
     const { results } = await data.json();
     dispatch(setSearchText(text))
@@ -132,17 +121,10 @@ export const searchPhotos = (text) => async (dispatch, getState) => {
 }
 
 export const likePhoto = (id) => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
     const { photosReducer: { photos, photo } } = getState();
-    const optionsWithToken = {
-        headers: {
-            ...options.headers,
-            Authorization: `Bearer ${token}` 
-        },
-        method: 'POST'
-    }
+    const options = createOptions(getState, 'POST');
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
-    const data = await fetch(likePhotoUri, optionsWithToken);
+    const data = await fetch(likePhotoUri, options);
     const photoData = await data.json();
     if(photo){
         if(photo.id == photoData.photo.id){
@@ -154,17 +136,10 @@ export const likePhoto = (id) => async (dispatch, getState) => {
 }
 
 export const unLikePhoto = (id) => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
     const { photosReducer: { photos, photo } } = getState();
-    const optionsWithToken = {
-        headers: {
-            ...options.headers,
-            Authorization: `Bearer ${token}` 
-        },
-        method: 'DELETE'
-    }
+    const options = createOptions(getState, 'DELETE');
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
-    const data = await fetch(likePhotoUri, optionsWithToken);
+    const data = await fetch(likePhotoUri, options);
     const photoData = await data.json();
     const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem);
     if(photo){
@@ -177,16 +152,7 @@ export const unLikePhoto = (id) => async (dispatch, getState) => {
 }
 
 export const getPhoto = (id) => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
-    
-    if(token){
-        options = {
-            headers: {
-                ...options.headers,
-                Authorization: `Bearer ${token}` 
-            }
-        }
-    }
+    const options = createOptions(getState);
     const getPhotoUri = `https://api.unsplash.com/photos/${id}`;
     const data = await fetch(getPhotoUri, options);
     const photo = await data.json();
@@ -194,16 +160,8 @@ export const getPhoto = (id) => async (dispatch, getState) => {
 }
 
 export const getRandomPhotos = () => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
     const { photosReducer: { photosPage } } = getState();
-    if(token){
-        options = {
-            headers: {
-                ...options.headers,
-                Authorization: `Bearer ${token}` 
-            }
-        }
-    }
+    const options = createOptions(getState);
     const data = await fetch(searchRandomPhotoUri + photosPage, options);
     const results  = await data.json();
     const photo = results.shift();
@@ -212,33 +170,16 @@ export const getRandomPhotos = () => async (dispatch, getState) => {
 }
 
 export const loadMoreRandomPhotos = () => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
     const { photosReducer: { photosPage } } = getState();
-    if(token){
-        options = {
-            headers: {
-                ...options.headers,
-                Authorization: `Bearer ${token}` 
-            }
-        }
-    }
+    const options = createOptions(getState);
     const data = await fetch(searchRandomPhotoUri + photosPage, options);
     const results  = await data.json();
     dispatch(loadMorePhotos(results));
 }
 
 export const loadMoreSearchPhotos = () => async (dispatch, getState) => {
-    const { authReducer: { token } } = getState();
     const { photosReducer: { photosPage, searchText } } = getState();
-    if(token){
-        options = {
-            headers: {
-                ...options.headers,
-                Authorization: `Bearer ${token}` 
-            }
-        }
-    }
-
+    const options = createOptions(getState);
     const data = await fetch(searchPhotosUri + `?page=${photosPage}&query=${searchText}`, options);
     const { results } = await data.json();
     dispatch(loadMorePhotos(results));

@@ -1,3 +1,5 @@
+import { createOptions } from '../utils';
+
 const types = {
   GET_CURRENT_USER_INFO: "GET_CURRENT_USER_INFO"
 }
@@ -32,14 +34,8 @@ export const setCurrentUser = (user) => ({
 })
 
 export const getCurrentUser = () => async (dispatch, getState) => {
-  const { authReducer: { token } } = getState();
-  const optionsWithToken = {
-    headers: {
-        ...options.headers,
-        Authorization: `Bearer ${token}` 
-    }
-}
-  const results = await fetch(getCurrentUserUri, optionsWithToken);
+  const options = createOptions(getState);
+  const results = await fetch(getCurrentUserUri, options);
   const user = await results.json();
   dispatch(setCurrentUser(user))
   console.log(user)
