@@ -17,10 +17,16 @@ const Profile = ({ user, getCurrentUser, logOut }) => {
     return (
         <div className={styles.Profile_container}>
             { user ?
+                <>
                 <div>
-                    {user.name}
+                <img src={user.profile_image['medium']} alt="profile"/>
                 </div>
-            
+                <div>
+                    <h1>{user.name}</h1>
+                    <div>Likes: {user.total_likes}</div>
+                    <div>Photos: {user.total_photos}</div>
+                </div>
+                </>
                 : <Loader />
             }
             <button onClick={logoutHanlder}>logout</button>

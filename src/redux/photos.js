@@ -8,7 +8,8 @@ const types = {
     LIKE_PHOTO: 'LIKE_PHOTO',
     SET_RANDOM_PHOTO: 'SET_RANDOM_PHOTO',
     LOAD_MORE_PHOTOS: 'LOAD_MORE_PHOTOS',
-    SET_SEARCH_TEXT: 'SET_SEARCH_TEXT'
+    SET_SEARCH_TEXT: 'SET_SEARCH_TEXT',
+    SET_IS_LOADING_MODE: 'SET_IS_LOADING_MORE'
 }
 
 const searchPhotosUri = `https://api.unsplash.com/search/photos`;
@@ -21,7 +22,8 @@ const initialState = {
     photo: null,
     randomPhoto: null,
     photosPage: 1,
-    searchText: ''
+    searchText: '',
+    isLoadingMore: false
 }
 
 export const photosReducer = (state = initialState, action) => {
@@ -69,6 +71,11 @@ export const photosReducer = (state = initialState, action) => {
                 ...state,
                 searchText: action.payload
             }
+        case types.SET_IS_LOADING_MODE:
+            return {
+                ...state,
+                isLoadingMore: action.payload
+            }
         default:
             return state
     }
@@ -110,6 +117,11 @@ export const loadMorePhotos = (photos) => ({
 export const setSearchText = (text) => ({
     type: types.SET_SEARCH_TEXT,
     payload: text
+})
+
+export const setIsLoadingMore = (bool) => ({
+    type: types.SET_IS_LOADING_MODE,
+    payload: bool
 })
 
 export const searchPhotos = (text) => async (dispatch, getState) => {

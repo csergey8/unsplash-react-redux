@@ -4,7 +4,7 @@ import styles from './HomeSearch.module.scss';
 
 const HomeSearch = ({ photo }) => {
     const style = {
-        background: `linear-gradient(rgba(0,0,0,0.3), rgba(0, 0, 0, 0.3)), url("${photo.urls.full}") no-repeat center`,
+        background: `linear-gradient(rgba(0,0,0,0.3), rgba(0, 0, 0, 0.3)), url("${photo.urls.regular}") no-repeat center`,
         backgroundSize: "cover"
     }
     return (

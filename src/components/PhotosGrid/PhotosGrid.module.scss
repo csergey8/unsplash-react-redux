@@ -1,10 +1,12 @@
 .PhotosGrid_container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    align-items: start;
-    justify-items: center;
-    gap: 25px 25px;
-    max-width: 1320px;
+//     display: grid;
+//     grid-template-columns: 1fr 1fr 1fr;
+//     grid-template-rows: auto;
+//     align-items: start;
+//     justify-items: center;
+//     gap: 25px 25px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 80%;
     margin: 0 auto;
 }
