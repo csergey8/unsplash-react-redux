@@ -6,6 +6,7 @@ const types = {
     SET_PHOTO: 'SET_PHOTO',
     CLEAR_PHOTO: 'CLEAR_PHOTO',
     LIKE_PHOTO: 'LIKE_PHOTO',
+    UN_LIKE_PHOTO: 'UN_LIKE_PHOTO',
     SET_RANDOM_PHOTO: 'SET_RANDOM_PHOTO',
     LOAD_MORE_PHOTOS: 'LOAD_MORE_PHOTOS',
     SET_SEARCH_TEXT: 'SET_SEARCH_TEXT',
@@ -14,8 +15,6 @@ const types = {
 
 const searchPhotosUri = `https://api.unsplash.com/search/photos`;
 const searchRandomPhotoUri = `https://api.unsplash.com/photos?page=`;
-
-
 
 const initialState = {
     photos: null,
@@ -50,8 +49,16 @@ export const photosReducer = (state = initialState, action) => {
                 photo: null
             }
         case types.LIKE_PHOTO:
+            let { photo } = action.payload
             return {
-                ...state
+                ...state,
+                photos: state.photos.map(photoItem => photoItem.id === photo.id ? {...photoItem, ...photo} : photoItem)
+            }
+        case types.UN_LIKE_PHOTO:
+            let photoToUnlike = action.payload.photo
+            return {
+                ...state,
+                photos: state.photos.map(photoItem => photoItem.id === photoToUnlike.id ? {...photoItem, ...photoToUnlike} : photoItem)
             }
         case types.SET_RANDOM_PHOTO:
             return {
@@ -104,6 +111,11 @@ export const likePhotoAction = (photo) => ({
     payload: photo
 })
 
+export const unLikePhotoAction = (photo) => ({
+    type: types.UN_LIKE_PHOTO,
+    payload: photo
+})
+
 export const setRandomPhoto = (photo) => ({
     type: types.SET_RANDOM_PHOTO,
     payload: photo
@@ -133,34 +145,27 @@ export const searchPhotos = (text) => async (dispatch, getState) => {
 }
 
 export const likePhoto = (id) => async (dispatch, getState) => {
-    const { photosReducer: { photos, photo } } = getState();
+    const { photosReducer: { photo } } = getState();
     const options = createOptions(getState, 'POST');
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
     const data = await fetch(likePhotoUri, options);
     const photoData = await data.json();
-    if(photo){
-        if(photo.id == photoData.photo.id){
-            dispatch(setPhoto({...photo, ...photoData.photo}))
-        }
+    if(photo && photo.id == photoData.photo.id){
+        dispatch(setPhoto({...photo, ...photoData.photo}))
     }
-    const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem)
-    dispatch(setPhotos(newPhotos))
+    dispatch(likePhotoAction(photoData))
 }
 
 export const unLikePhoto = (id) => async (dispatch, getState) => {
-    const { photosReducer: { photos, photo } } = getState();
+    const { photosReducer: { photo } } = getState();
     const options = createOptions(getState, 'DELETE');
     const likePhotoUri = `https://api.unsplash.com/photos/${id}/like`
     const data = await fetch(likePhotoUri, options);
     const photoData = await data.json();
-    const newPhotos = photos.map(photoItem => photoItem.id === photoData.photo.id ? {...photoItem, ...photoData.photo} : photoItem);
-    if(photo){
-        if(photo.id == photoData.photo.id){
-            dispatch(setPhoto({...photo, ...photoData.photo}))
-        }
+    if(photo && photo.id == photoData.photo.id){
+        dispatch(setPhoto({...photo, ...photoData.photo}))
     }
-    
-    dispatch(setPhotos(newPhotos))
+    dispatch(unLikePhotoAction(photoData))
 }
 
 export const getPhoto = (id) => async (dispatch, getState) => {

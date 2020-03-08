@@ -1,23 +1,22 @@
-import React from "react";
-import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
-import styles from "./Buttons.module.scss";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import React from 'react';
+import { withRouter } from 'react-router';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import styles from './Buttons.module.scss';
 
-const ButtonDownload = ({ link, history }) => {
-  return (
-    <div>
-      <a
-        href={link}
-        download
-        target="_blank"
-        className={`${styles.button} ${styles.buttonDownload}`}
-      >
-        <ArrowDownwardIcon className={styles.icon} />
-      </a>
-    </div>
-  );
-};
+const ButtonDownload = ({ link }) => (
+  <div>
+    <a
+      href={link}
+      download
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.button} ${styles.buttonDownload}`}
+    >
+      <ArrowDownwardIcon className={styles.icon} />
+    </a>
+  </div>
+);
+
 
 const ButtonDownloadWithRouter = withRouter(ButtonDownload);
 

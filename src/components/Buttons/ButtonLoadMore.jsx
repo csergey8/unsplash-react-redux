@@ -1,10 +1,14 @@
 import React from 'react';
-import styles from "./Buttons.module.scss";
+import styles from './Buttons.module.scss';
 
-const ButtonLoadMore = (props) => {
-    return (
-        <button className={`${styles.button} ${styles.buttonLoadMore}`} onClick={props.loadMore}>load more</button>
-    )
-}
+const ButtonLoadMore = ({ loadMore }) => (
+  <button
+    className={`${styles.button} ${styles.buttonLoadMore}`}
+    onClick={loadMore}
+    type="button"
+  >
+    load more
+  </button>
+);
 
-export { ButtonLoadMore }
+export { ButtonLoadMore };
