@@ -1,46 +1,67 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import styles from "./Photos.module.scss";
-import { PhotosGrid } from "../PhotosGrid";
-import { searchPhotos, clearPhotos, loadMoreSearchPhotos } from "../../redux/photos";
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { PhotosGrid } from '../PhotosGrid';
+import {
+  searchPhotos,
+  clearPhotos,
+  loadMoreSearchPhotos,
+} from '../../redux/photos';
 import { Photo } from '../Photo';
-import { Route } from "react-router-dom";
-import { Loader } from "../Loader";
+import { Loader } from '../Loader';
+import styles from './Photos.module.scss';
 
-const Photos = props => {
+const Photos = ({
+  authProccess,
+  searchPhotos,
+  match,
+  clearPhotos,
+  history,
+  loadMore,
+  photos,
+}) => {
   useEffect(() => {
-    if (!props.authProccess) {
-      props.searchPhotos(props.match.params.text);
+    if (!authProccess) {
+      searchPhotos(match.params.text);
     }
-    return () => props.clearPhotos()
-  }, [props.match.params.text, props.authProccess]);
+    return () => clearPhotos();
+  }, [match.params.text, authProccess]);
 
   const title =
-    props.match.params.text.charAt(0).toUpperCase() +
-    props.match.params.text.substring(1);
+    match.params.text.charAt(0).toUpperCase() + match.params.text.substring(1);
 
   const modalCloseHandler = () => {
-      props.history.push(props.match.url);
-  }
+    history.push(match.url);
+  };
   return (
     <div className={styles.Photos_container}>
       <h1 className={styles.Photos_title}>{title}</h1>
-        {props.photos ? <PhotosGrid photos={props.photos} /> : (<div className={styles.Loader_container}><Loader /></div>)}
-        <button onClick={() => props.loadMore()}>Load more</button>
-      <Route path={`${props.match.url}/:id`} render={() => <Photo onClose={modalCloseHandler} />} />
+      {photos ? (
+        <PhotosGrid photos={photos} />
+      ) : (
+        <div className={styles.Loader_container}>
+          <Loader />
+        </div>
+      )}
+      <button type="button" onClick={() => loadMore()}>Load more</button>
+      <Route
+        path={`${match.url}/:id`}
+        render={() => <Photo onClose={modalCloseHandler} />}
+      />
     </div>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   photos: state.photosReducer.photos,
-  authProccess: state.authReducer.authProccess
+  authProccess: state.authReducer.authProccess,
 });
 
-const mapDispatchToProps = dispatch => ({
-  searchPhotos: text => dispatch(searchPhotos(text)),
+const mapDispatchToProps = (dispatch) => ({
+  searchPhotos: (text) => dispatch(searchPhotos(text)),
   clearPhotos: () => dispatch(clearPhotos()),
-  loadMore: () => dispatch(loadMoreSearchPhotos())
+  loadMore: () => dispatch(loadMoreSearchPhotos()),
 });
 
 const PhotosWithRedux = connect(mapStateToProps, mapDispatchToProps)(Photos);
